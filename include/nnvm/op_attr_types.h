@@ -72,6 +72,24 @@ template<typename AttrType>
 using FInferNodeEntryAttr = std::function<bool (const NodeAttrs& attrs,
                                                 std::vector<AttrType> *in_attrs,
                                                 std::vector<AttrType> *out_attrs)>;
+
+
+/*!
+ * \brief Inference function for three input and output types
+ * \tparam Primary first input and output type
+ * \tparam Secondary second input and output type
+ * \tparam Tertiary third input and output type
+ * \return whether all attributes are inferred.
+ */
+template<typename Primary, typename Secondary, typename Tertiary>
+using FInferTriNodeEntry = std::function<bool (const nnvm::NodeAttrs& attrs,
+                                               std::vector<Primary> *in_primary,
+                                               std::vector<Secondary> *in_secondary,
+                                               std::vector<Tertiary> *in_tertiary,
+                                               std::vector<Primary> *out_primary,
+                                               std::vector<Secondary> *out_secondary,
+                                               std::vector<Tertiary> *out_tertiary)>;
+
 /*!
  * \brief Shape inference function.
  *  Update the shapes given the input shape information.
@@ -101,6 +119,16 @@ using FInferType = FInferNodeEntryAttr<int>;
  *  by default set all the output types to 1.
  */
 using FInferStorageType = FInferNodeEntryAttr<int>;
+
+/*!
+ * \brief Non-default storage infer geometry function
+ *  Update the type given the known type information.
+ *
+ * \note Register under "FInferStorageGeometry",
+ *  by default set all the output types to 1.
+ */
+using FInferStorageGeometry = FInferTriNodeEntry<TShape, std::vector<TShape>, std::vector<int>>;
+
 /*!
  * \brief Whether this op is an explicit backward operator,
  * If TIsBackward is true:
