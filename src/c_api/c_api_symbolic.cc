@@ -16,6 +16,7 @@ int NNListAllOpNames(nn_uint *out_size,
   NNAPIThreadLocalEntry *ret = NNAPIThreadLocalStore::Get();
   ret->ret_vec_str = dmlc::Registry<Op>::ListAllNames();
   ret->ret_vec_charp.clear();
+  ret->ret_vec_charp.reserve(ret->ret_vec_str.size());
   for (size_t i = 0; i < ret->ret_vec_str.size(); ++i) {
     ret->ret_vec_charp.push_back(ret->ret_vec_str[i].c_str());
   }
@@ -65,6 +66,7 @@ int NNGetOpInfo(OpHandle handle,
   *num_doc_args = static_cast<nn_uint>(op->arguments.size());
   if (return_type) *return_type = nullptr;
   ret->ret_vec_charp.clear();
+  ret->ret_vec_charp.reserve(op->arguments.size() * 3);
   for (size_t i = 0; i < op->arguments.size(); ++i) {
     ret->ret_vec_charp.push_back(op->arguments[i].name.c_str());
   }
@@ -214,6 +216,7 @@ int NNSymbolListAttrs(SymbolHandle symbol,
   }
   *out_size = attr.size();
   ret->ret_vec_charp.clear();
+  ret->ret_vec_charp.reserve(ret->ret_vec_str.size());
   for (size_t i = 0; i < ret->ret_vec_str.size(); ++i) {
     ret->ret_vec_charp.push_back(ret->ret_vec_str[i].c_str());
   }
@@ -230,6 +233,7 @@ int NNSymbolListInputVariables(SymbolHandle symbol,
   API_BEGIN();
   std::vector<NodePtr> vs = s->ListInputs(Symbol::ListInputOption(option));
   ret->ret_handles.clear();
+  ret->ret_handles.reserve(vs.size());
   for (size_t i = 0; i < vs.size(); ++i) {
     nnvm::Symbol* rs = new nnvm::Symbol();
     rs->outputs.push_back(NodeEntry{vs[i], 0, 0});
@@ -250,6 +254,7 @@ int NNSymbolListInputNames(SymbolHandle symbol,
   ret->ret_vec_str =
       s->ListInputNames(Symbol::ListInputOption(option));
   ret->ret_vec_charp.clear();
+  ret->ret_vec_charp.reserve(ret->ret_vec_str.size());
   for (size_t i = 0; i < ret->ret_vec_str.size(); ++i) {
     ret->ret_vec_charp.push_back(ret->ret_vec_str[i].c_str());
   }
@@ -266,6 +271,7 @@ int NNSymbolListOutputNames(SymbolHandle symbol,
   API_BEGIN();
   ret->ret_vec_str = s->ListOutputNames();
   ret->ret_vec_charp.clear();
+  ret->ret_vec_charp.reserve(ret->ret_vec_str.size());
   for (size_t i = 0; i < ret->ret_vec_str.size(); ++i) {
     ret->ret_vec_charp.push_back(ret->ret_vec_str[i].c_str());
   }
