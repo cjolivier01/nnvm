@@ -189,6 +189,7 @@ Symbol Symbol::operator[] (size_t index) const {
 std::vector<NodePtr> Symbol::ListInputs(ListInputOption option) const {
   std::vector<NodePtr> ret;
   if (option == kAll) {
+    ret.reserve(this->outputs.size());
     DFSVisit(this->outputs, [&ret](const NodePtr &node) {
         if (node->is_variable()) {
           ret.push_back(node);
@@ -197,6 +198,7 @@ std::vector<NodePtr> Symbol::ListInputs(ListInputOption option) const {
   } else {
     std::unordered_set<Node*> mutable_set;
     std::vector<NodePtr> vlist;
+    vlist.reserve(this->outputs.size());
     static auto& fmutate_inputs = Op::GetAttr<FMutateInputs>("FMutateInputs");
     DFSVisit(this->outputs, [&ret, &mutable_set, &vlist](const NodePtr &node) {
         if (node->is_variable()) {
