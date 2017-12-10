@@ -255,7 +255,7 @@ NNVM_DLL int NNSymbolListOutputNames(SymbolHandle symbol,
  * \param output_count number of outputs
  * \return 0 when success, -1 when failure happens
  */
-NNVM_DLL int NNSymbolGetOutputCount(SymbolHandle symbol,
+NNVM_DLL int NNSymbolGetNumOutputs(SymbolHandle symbol,
                                     nn_uint *output_count);
 
 /*!

@@ -281,7 +281,7 @@ int NNSymbolListOutputNames(SymbolHandle symbol,
   API_END();
 }
 
-int NNSymbolGetOutputCount(SymbolHandle symbol,
+int NNSymbolGetNumOutputs(SymbolHandle symbol,
                            nn_uint *output_count) {
   Symbol *s = static_cast<Symbol*>(symbol);
   API_BEGIN();
